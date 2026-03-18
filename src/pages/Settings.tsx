@@ -48,15 +48,11 @@ export default function Settings() {
   return (
     <div className="space-y-8 animate-fade-in-up">
       <section>
-        <h2 className="font-heading text-lg font-bold mb-4" style={{ color: 'var(--text)' }}>
-          教材管理
-        </h2>
+        <h2 className="font-heading text-lg font-bold mb-4 text-theme">教材管理</h2>
 
         {!hasMaterials && !showAddForm ? (
           <div className="text-center py-8">
-            <p className="mb-4" style={{ color: 'var(--text-muted)' }}>
-              教材を追加しましょう
-            </p>
+            <p className="mb-4 text-muted">教材を追加しましょう</p>
             <MaterialForm
               onSubmit={(values) => {
                 addMaterial(values);
@@ -74,9 +70,7 @@ export default function Settings() {
 
             {showAddForm ? (
               <div className="mt-4 card">
-                <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--text-muted)' }}>
-                  新しい教材を追加
-                </h3>
+                <h3 className="text-sm font-medium mb-3 text-muted">新しい教材を追加</h3>
                 <MaterialForm
                   onSubmit={(values) => {
                     addMaterial(values);
@@ -88,11 +82,7 @@ export default function Settings() {
             ) : (
               <button
                 onClick={() => setShowAddForm(true)}
-                className="mt-4 w-full rounded-lg border border-dashed py-2 text-sm transition-colors"
-                style={{
-                  borderColor: 'var(--border)',
-                  color: 'var(--text-muted)',
-                }}
+                className="mt-4 w-full rounded-lg border border-dashed border-theme py-2 text-sm text-muted transition-colors"
               >
                 + 教材を追加
               </button>
@@ -102,21 +92,15 @@ export default function Settings() {
       </section>
 
       <section>
-        <h2 className="font-heading text-lg font-bold mb-4" style={{ color: 'var(--text)' }}>
-          データ管理
-        </h2>
+        <h2 className="font-heading text-lg font-bold mb-4 text-theme">データ管理</h2>
         <div className="flex gap-3">
           <button
             onClick={handleExport}
-            className="rounded-lg px-4 py-2 text-sm font-medium transition-colors"
-            style={{ backgroundColor: 'var(--accent-soft)', color: 'var(--text-muted)' }}
+            className="rounded-lg px-4 py-2 text-sm font-medium bg-accent-soft text-muted transition-colors"
           >
             エクスポート
           </button>
-          <label
-            className="rounded-lg px-4 py-2 text-sm font-medium transition-colors cursor-pointer"
-            style={{ backgroundColor: 'var(--accent-soft)', color: 'var(--text-muted)' }}
-          >
+          <label className="rounded-lg px-4 py-2 text-sm font-medium bg-accent-soft text-muted transition-colors cursor-pointer">
             インポート
             <input
               ref={fileInputRef}

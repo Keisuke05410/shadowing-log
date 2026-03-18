@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { secondsToMinSec } from '../lib/format';
 
 interface MaterialFormProps {
   initialValues?: { name: string; lengthSeconds: number; url: string };
@@ -7,13 +8,7 @@ interface MaterialFormProps {
   submitLabel?: string;
 }
 
-function secondsToMinSec(totalSeconds: number): { min: string; sec: string } {
-  const min = Math.floor(totalSeconds / 60);
-  const sec = totalSeconds % 60;
-  return { min: String(min), sec: String(sec).padStart(2, '0') };
-}
-
-const inputClass = 'w-full rounded-lg border px-3 py-2 text-sm transition-all';
+const inputClass = 'w-full rounded-lg border border-theme px-3 py-2 text-sm text-theme transition-all';
 
 export default function MaterialForm({
   initialValues,
@@ -71,7 +66,7 @@ export default function MaterialForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {errors.length > 0 && (
-        <div className="text-sm space-y-1" style={{ color: 'var(--danger)' }}>
+        <div className="text-sm space-y-1 text-danger">
           {errors.map((err, i) => (
             <p key={i}>{err}</p>
           ))}
@@ -79,8 +74,8 @@ export default function MaterialForm({
       )}
 
       <div>
-        <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-muted)' }}>
-          教材名 <span style={{ color: 'var(--danger)' }}>*</span>
+        <label className="block text-sm font-medium mb-1 text-muted">
+          教材名 <span className="text-danger">*</span>
         </label>
         <input
           type="text"
@@ -88,14 +83,13 @@ export default function MaterialForm({
           onChange={(e) => setName(e.target.value)}
           maxLength={100}
           className={inputClass}
-          style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
           placeholder="例: TED Talk - The Power of Vulnerability"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-muted)' }}>
-          教材の長さ <span style={{ color: 'var(--danger)' }}>*</span>
+        <label className="block text-sm font-medium mb-1 text-muted">
+          教材の長さ <span className="text-danger">*</span>
         </label>
         <div className="flex items-center gap-1">
           <input
@@ -104,35 +98,30 @@ export default function MaterialForm({
             onChange={(e) => setMin(e.target.value)}
             min={0}
             max={60}
-            className="w-20 rounded-lg border px-3 py-2 text-sm transition-all"
-            style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
+            className="w-20 rounded-lg border border-theme px-3 py-2 text-sm text-theme transition-all"
             placeholder="分"
           />
-          <span style={{ color: 'var(--text-muted)' }}>:</span>
+          <span className="text-muted">:</span>
           <input
             type="number"
             value={sec}
             onChange={(e) => setSec(e.target.value)}
             min={0}
             max={59}
-            className="w-20 rounded-lg border px-3 py-2 text-sm transition-all"
-            style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
+            className="w-20 rounded-lg border border-theme px-3 py-2 text-sm text-theme transition-all"
             placeholder="秒"
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-muted)' }}>
-          URL
-        </label>
+        <label className="block text-sm font-medium mb-1 text-muted">URL</label>
         <input
           type="url"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           maxLength={2048}
           className={inputClass}
-          style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
           placeholder="https://..."
         />
       </div>
@@ -140,8 +129,7 @@ export default function MaterialForm({
       <div className="flex gap-2">
         <button
           type="submit"
-          className="rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors"
-          style={{ backgroundColor: 'var(--accent)' }}
+          className="rounded-lg px-4 py-2 text-sm font-medium text-white bg-theme-accent transition-colors"
         >
           {submitLabel}
         </button>
@@ -149,11 +137,7 @@ export default function MaterialForm({
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-lg px-4 py-2 text-sm font-medium transition-colors"
-            style={{
-              backgroundColor: 'var(--accent-soft)',
-              color: 'var(--text-muted)',
-            }}
+            className="rounded-lg px-4 py-2 text-sm font-medium bg-accent-soft text-muted transition-colors"
           >
             キャンセル
           </button>

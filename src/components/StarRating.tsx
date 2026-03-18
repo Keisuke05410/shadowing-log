@@ -15,8 +15,8 @@ export default function StarRating({ value, onChange, readonly = false }: StarRa
           onClick={() => onChange?.(star as 1 | 2 | 3 | 4 | 5)}
           className={`text-2xl transition-all ${
             readonly ? 'cursor-default' : 'cursor-pointer hover:scale-110'
-          }`}
-          style={{ color: star <= value ? 'var(--accent)' : 'var(--border)' }}
+          } ${star <= value ? 'text-accent' : ''}`}
+          style={star <= value ? undefined : { color: 'var(--border)' }}
           aria-label={`${star}点`}
         >
           ★

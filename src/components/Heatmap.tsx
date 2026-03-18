@@ -1,8 +1,9 @@
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ActivityCalendar } from 'react-activity-calendar';
 import type { Activity, BlockElement } from 'react-activity-calendar';
 import type { PracticeSession, Material } from '../types';
-import { buildHeatmapData, getDaySummary } from '../lib/heatmap';
+import { buildHeatmapData, getDaySummary, type DaySummary } from '../lib/heatmap';
 
 interface HeatmapProps {
   sessions: PracticeSession[];
@@ -11,9 +12,19 @@ interface HeatmapProps {
 
 export default function Heatmap({ sessions, materials }: HeatmapProps) {
   const navigate = useNavigate();
-  const heatmapData = buildHeatmapData(sessions);
+  const heatmapData = useMemo(() => buildHeatmapData(sessions), [sessions]);
 
-  const materialMap = new Map(materials.map((m) => [m.id, m.name]));
+  const materialMap = useMemo(() => new Map(materials.map((m) => [m.id, m.name])), [materials]);
+
+  const daySummaries = useMemo(() => {
+    const map = new Map<string, DaySummary>();
+    for (const entry of heatmapData) {
+      if (entry.count > 0) {
+        map.set(entry.date, getDaySummary(sessions, entry.date, materialMap));
+      }
+    }
+    return map;
+  }, [heatmapData, sessions, materialMap]);
 
   const handleClick = (date: string) => {
     navigate('/history', { state: { jumpToDate: date } });
@@ -21,7 +32,8 @@ export default function Heatmap({ sessions, materials }: HeatmapProps) {
 
   const renderBlock = (block: BlockElement, activity: Activity) => {
     if (activity.count === 0) return block;
-    const summary = getDaySummary(sessions, activity.date, materialMap);
+    const summary = daySummaries.get(activity.date);
+    if (!summary) return block;
     const tooltip = `${summary.sessionCount}件 ・ ${summary.totalMinutes}分 — ${summary.materialNames.join(', ')}`;
     return (
       <g onClick={() => handleClick(activity.date)} style={{ cursor: 'pointer' }}>

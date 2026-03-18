@@ -1,4 +1,4 @@
-import { useState, useCallback, type ReactNode } from 'react';
+import { useState, useCallback, useMemo, type ReactNode } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import type { AppData, Material, PracticeSession } from '../types';
 import { loadData, saveData, StorageReadError } from '../lib/storage';
@@ -34,83 +34,83 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
         id: uuidv4(),
         createdAt: new Date().toISOString(),
       };
-      const next = { ...data, materials: [material, ...data.materials] };
-      setState({ data: next, error });
-      persist(next);
+      setState((prev) => {
+        const nextData = { ...prev.data, materials: [material, ...prev.data.materials] };
+        persist(nextData);
+        return { ...prev, data: nextData };
+      });
       return material;
     },
-    [data, error],
+    [],
   );
 
   const updateMaterial = useCallback(
     (id: string, input: Partial<Omit<Material, 'id' | 'createdAt'>>) => {
-      const next = {
-        ...data,
-        materials: data.materials.map((m) => (m.id === id ? { ...m, ...input } : m)),
-      };
-      setState({ data: next, error });
-      persist(next);
+      setState((prev) => {
+        const nextData = {
+          ...prev.data,
+          materials: prev.data.materials.map((m) => (m.id === id ? { ...m, ...input } : m)),
+        };
+        persist(nextData);
+        return { ...prev, data: nextData };
+      });
     },
-    [data, error],
+    [],
   );
 
-  const deleteMaterial = useCallback(
-    (id: string) => {
-      const next = {
-        ...data,
-        materials: data.materials.filter((m) => m.id !== id),
+  const deleteMaterial = useCallback((id: string) => {
+    setState((prev) => {
+      const nextData = {
+        ...prev.data,
+        materials: prev.data.materials.filter((m) => m.id !== id),
       };
-      setState({ data: next, error });
-      persist(next);
-    },
-    [data, error],
-  );
+      persist(nextData);
+      return { ...prev, data: nextData };
+    });
+  }, []);
 
-  const addSession = useCallback(
-    (input: Omit<PracticeSession, 'id' | 'createdAt'>) => {
-      const session: PracticeSession = {
-        ...input,
-        id: uuidv4(),
-        createdAt: new Date().toISOString(),
-      };
-      const next = { ...data, sessions: [...data.sessions, session] };
-      setState({ data: next, error });
-      persist(next);
-    },
-    [data, error],
-  );
+  const addSession = useCallback((input: Omit<PracticeSession, 'id' | 'createdAt'>) => {
+    const session: PracticeSession = {
+      ...input,
+      id: uuidv4(),
+      createdAt: new Date().toISOString(),
+    };
+    setState((prev) => {
+      const nextData = { ...prev.data, sessions: [...prev.data.sessions, session] };
+      persist(nextData);
+      return { ...prev, data: nextData };
+    });
+  }, []);
 
-  const deleteSession = useCallback(
-    (id: string) => {
-      const next = {
-        ...data,
-        sessions: data.sessions.filter((s) => s.id !== id),
+  const deleteSession = useCallback((id: string) => {
+    setState((prev) => {
+      const nextData = {
+        ...prev.data,
+        sessions: prev.data.sessions.filter((s) => s.id !== id),
       };
-      setState({ data: next, error });
-      persist(next);
-    },
-    [data, error],
-  );
+      persist(nextData);
+      return { ...prev, data: nextData };
+    });
+  }, []);
 
   const importAll = useCallback((newData: AppData) => {
     setState({ data: newData, error: null });
     persist(newData);
   }, []);
 
-  return (
-    <AppDataContext.Provider
-      value={{
-        data,
-        error,
-        addMaterial,
-        updateMaterial,
-        deleteMaterial,
-        addSession,
-        deleteSession,
-        importAll,
-      }}
-    >
-      {children}
-    </AppDataContext.Provider>
+  const value = useMemo(
+    () => ({
+      data,
+      error,
+      addMaterial,
+      updateMaterial,
+      deleteMaterial,
+      addSession,
+      deleteSession,
+      importAll,
+    }),
+    [data, error, addMaterial, updateMaterial, deleteMaterial, addSession, deleteSession, importAll],
   );
+
+  return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;
 }

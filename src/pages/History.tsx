@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { useAppData } from '../hooks/useAppData';
 import SessionCard from '../components/SessionCard';
+import EmptyState from '../components/EmptyState';
 
 export default function History() {
   const { data, deleteSession } = useAppData();
@@ -72,21 +73,12 @@ export default function History() {
 
   if (sessions.length === 0) {
     return (
-      <div className="text-center py-16 animate-fade-in-up">
-        <p className="font-heading text-4xl mb-2" style={{ color: 'var(--text-faint)' }}>
-          ☰
-        </p>
-        <p className="mb-4" style={{ color: 'var(--text-muted)' }}>
-          まだ記録がありません
-        </p>
-        <Link
-          to="/record"
-          className="inline-block rounded-full px-4 py-2 text-sm font-medium text-white transition-colors"
-          style={{ backgroundColor: 'var(--accent)' }}
-        >
-          記録する
-        </Link>
-      </div>
+      <EmptyState
+        icon="☰"
+        message="まだ記録がありません"
+        linkTo="/record"
+        linkLabel="記録する"
+      />
     );
   }
 
@@ -105,8 +97,7 @@ export default function History() {
           <div key={month}>
             <button
               onClick={() => toggleMonth(month)}
-              className="flex items-center gap-2 text-sm font-medium mb-3 transition-colors"
-              style={{ color: 'var(--text-muted)' }}
+              className="flex items-center gap-2 text-sm font-medium mb-3 text-muted transition-colors"
             >
               <span
                 className="transition-transform inline-block"
@@ -126,12 +117,7 @@ export default function History() {
 
                   return (
                     <div key={date} id={`date-${date}`}>
-                      <h3
-                        className="text-sm font-medium mb-2"
-                        style={{ color: 'var(--text-muted)' }}
-                      >
-                        {dateLabel}
-                      </h3>
+                      <h3 className="text-sm font-medium mb-2 text-muted">{dateLabel}</h3>
                       <div className="space-y-2">
                         {daySessions.map((session) => (
                           <SessionCard

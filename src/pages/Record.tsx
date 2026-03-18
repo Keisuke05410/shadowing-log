@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import { useAppData } from '../hooks/useAppData';
@@ -7,8 +7,10 @@ import { calculateStreak } from '../lib/streak';
 import { getPositiveMessage, RETURNING_MESSAGE } from '../lib/messages';
 import StarRating from '../components/StarRating';
 import MaterialForm from '../components/MaterialForm';
+import EmptyState from '../components/EmptyState';
 
 const PRESET_MINUTES = [5, 10, 15, 30];
+const NEW_MATERIAL_VALUE = '__new__' as const;
 
 export default function Record() {
   const navigate = useNavigate();
@@ -18,21 +20,12 @@ export default function Record() {
   // 教材0件
   if (materials.length === 0) {
     return (
-      <div className="text-center py-16 animate-fade-in-up">
-        <p className="font-heading text-4xl mb-2" style={{ color: 'var(--text-faint)' }}>
-          ✎
-        </p>
-        <p className="mb-4" style={{ color: 'var(--text-muted)' }}>
-          教材を登録してから記録しましょう
-        </p>
-        <Link
-          to="/settings"
-          className="inline-block rounded-full px-4 py-2 text-sm font-medium text-white transition-colors"
-          style={{ backgroundColor: 'var(--accent)' }}
-        >
-          設定画面へ
-        </Link>
-      </div>
+      <EmptyState
+        icon="✎"
+        message="教材を登録してから記録しましょう"
+        linkTo="/settings"
+        linkLabel="設定画面へ"
+      />
     );
   }
 
@@ -96,7 +89,7 @@ function RecordForm({ defaultMaterialId, materials, onSubmit, onAddMaterial }: R
   const [showNewMaterial, setShowNewMaterial] = useState(false);
 
   const handleMaterialSelect = (value: string) => {
-    if (value === '__new__') {
+    if (value === NEW_MATERIAL_VALUE) {
       setShowNewMaterial(true);
     } else {
       setMaterialId(value);
@@ -132,9 +125,7 @@ function RecordForm({ defaultMaterialId, materials, onSubmit, onAddMaterial }: R
   if (showNewMaterial) {
     return (
       <div className="space-y-4 animate-fade-in-up">
-        <h2 className="font-heading text-lg font-bold" style={{ color: 'var(--text)' }}>
-          新しい教材を登録
-        </h2>
+        <h2 className="font-heading text-lg font-bold text-theme">新しい教材を登録</h2>
         <MaterialForm
           onSubmit={(values) => {
             const newMaterial = onAddMaterial(values);
@@ -149,12 +140,10 @@ function RecordForm({ defaultMaterialId, materials, onSubmit, onAddMaterial }: R
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 animate-fade-in-up">
-      <h2 className="font-heading text-lg font-bold" style={{ color: 'var(--text)' }}>
-        練習を記録
-      </h2>
+      <h2 className="font-heading text-lg font-bold text-theme">練習を記録</h2>
 
       {errors.length > 0 && (
-        <div className="text-sm space-y-1" style={{ color: 'var(--danger)' }}>
+        <div className="text-sm space-y-1 text-danger">
           {errors.map((err, i) => (
             <p key={i}>{err}</p>
           ))}
@@ -162,41 +151,39 @@ function RecordForm({ defaultMaterialId, materials, onSubmit, onAddMaterial }: R
       )}
 
       <div>
-        <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-muted)' }}>
-          日付 <span style={{ color: 'var(--danger)' }}>*</span>
+        <label className="block text-sm font-medium mb-1 text-muted">
+          日付 <span className="text-danger">*</span>
         </label>
         <input
           type="date"
           value={dateValue}
           max={todayStr}
           onChange={(e) => setDate(e.target.value)}
-          className="rounded-lg border px-3 py-2 text-sm transition-all"
-          style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
+          className="rounded-lg border border-theme px-3 py-2 text-sm text-theme transition-all"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-muted)' }}>
-          教材 <span style={{ color: 'var(--danger)' }}>*</span>
+        <label className="block text-sm font-medium mb-1 text-muted">
+          教材 <span className="text-danger">*</span>
         </label>
         <select
           value={materialId}
           onChange={(e) => handleMaterialSelect(e.target.value)}
-          className="w-full rounded-lg border px-3 py-2 text-sm transition-all"
-          style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
+          className="w-full rounded-lg border border-theme px-3 py-2 text-sm text-theme transition-all"
         >
           {materials.map((m) => (
             <option key={m.id} value={m.id}>
               {m.name}
             </option>
           ))}
-          <option value="__new__">+ 新規登録</option>
+          <option value={NEW_MATERIAL_VALUE}>+ 新規登録</option>
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-muted)' }}>
-          練習時間（分） <span style={{ color: 'var(--danger)' }}>*</span>
+        <label className="block text-sm font-medium mb-1 text-muted">
+          練習時間（分） <span className="text-danger">*</span>
         </label>
         <div className="flex gap-2 mb-2">
           {PRESET_MINUTES.map((m) => (
@@ -204,12 +191,11 @@ function RecordForm({ defaultMaterialId, materials, onSubmit, onAddMaterial }: R
               key={m}
               type="button"
               onClick={() => setDuration(m)}
-              className="rounded-full px-3 py-1.5 text-sm font-medium transition-all"
-              style={
+              className={`rounded-full px-3 py-1.5 text-sm font-medium transition-all ${
                 duration === m
-                  ? { backgroundColor: 'var(--accent)', color: '#ffffff' }
-                  : { backgroundColor: 'var(--accent-soft)', color: 'var(--text-muted)' }
-              }
+                  ? 'bg-theme-accent text-white'
+                  : 'bg-accent-soft text-muted'
+              }`}
             >
               {m}分
             </button>
@@ -222,40 +208,33 @@ function RecordForm({ defaultMaterialId, materials, onSubmit, onAddMaterial }: R
           min={1}
           max={180}
           placeholder="カスタム入力"
-          className="w-32 rounded-lg border px-3 py-2 text-sm transition-all"
-          style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
+          className="w-32 rounded-lg border border-theme px-3 py-2 text-sm text-theme transition-all"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-muted)' }}>
-          自己評価 <span style={{ color: 'var(--danger)' }}>*</span>
+        <label className="block text-sm font-medium mb-1 text-muted">
+          自己評価 <span className="text-danger">*</span>
         </label>
         <StarRating value={evaluation} onChange={setEvaluation} />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-muted)' }}>
-          メモ
-        </label>
+        <label className="block text-sm font-medium mb-1 text-muted">メモ</label>
         <textarea
           value={memo}
           onChange={(e) => setMemo(e.target.value)}
           maxLength={500}
           rows={3}
-          className="w-full rounded-lg border px-3 py-2 text-sm transition-all"
-          style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
+          className="w-full rounded-lg border border-theme px-3 py-2 text-sm text-theme transition-all"
           placeholder="気づいたことなど..."
         />
-        <p className="text-xs mt-1" style={{ color: 'var(--text-faint)' }}>
-          {memo.length}/500
-        </p>
+        <p className="text-xs mt-1 text-faint">{memo.length}/500</p>
       </div>
 
       <button
         type="submit"
-        className="w-full rounded-full px-4 py-3 text-sm font-medium text-white transition-colors"
-        style={{ backgroundColor: 'var(--accent)' }}
+        className="w-full rounded-full px-4 py-3 text-sm font-medium text-white bg-theme-accent transition-colors"
       >
         記録を保存
       </button>

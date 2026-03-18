@@ -35,22 +35,8 @@ body {
   }
 }
 
-@keyframes subtle-pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.03);
-  }
-}
-
 .animate-fade-in-up {
   animation: fade-in-up 0.4s ease-out both;
-}
-
-.animate-subtle-pulse {
-  animation: subtle-pulse 2s ease-in-out infinite;
 }
 
 /* Stagger children */
@@ -98,4 +84,36 @@ textarea:focus {
 /* Heading font */
 .font-heading {
   font-family: 'Outfit', sans-serif;
+}
+
+/* Theme color utilities */
+.text-theme {
+  color: var(--text);
+}
+.text-muted {
+  color: var(--text-muted);
+}
+.text-faint {
+  color: var(--text-faint);
+}
+.text-accent {
+  color: var(--accent);
+}
+.text-danger {
+  color: var(--danger);
+}
+.text-success {
+  color: var(--success);
+}
+.bg-theme-accent {
+  background-color: var(--accent);
+}
+.bg-accent-soft {
+  background-color: var(--accent-soft);
+}
+.border-theme {
+  border-color: var(--border);
+}
+.border-success {
+  border-color: var(--success);
 }

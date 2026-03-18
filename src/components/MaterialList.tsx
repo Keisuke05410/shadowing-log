@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Material, PracticeSession } from '../types';
+import { formatLength } from '../lib/format';
 import MaterialForm from './MaterialForm';
 
 interface MaterialListProps {
@@ -7,12 +8,6 @@ interface MaterialListProps {
   sessions: PracticeSession[];
   onUpdate: (id: string, values: Partial<Omit<Material, 'id' | 'createdAt'>>) => void;
   onDelete: (id: string) => void;
-}
-
-function formatLength(seconds: number): string {
-  const min = Math.floor(seconds / 60);
-  const sec = seconds % 60;
-  return sec > 0 ? `${min}:${String(sec).padStart(2, '0')}` : `${min}:00`;
 }
 
 export default function MaterialList({
@@ -60,10 +55,8 @@ export default function MaterialList({
         ) : (
           <div key={material.id} className="card card-hover flex items-center justify-between">
             <div>
-              <p className="font-medium" style={{ color: 'var(--text)' }}>
-                {material.name}
-              </p>
-              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+              <p className="font-medium text-theme">{material.name}</p>
+              <p className="text-sm text-muted">
                 {formatLength(material.lengthSeconds)}
                 {material.url && (
                   <>
@@ -72,8 +65,7 @@ export default function MaterialList({
                       href={material.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline"
-                      style={{ color: 'var(--accent)' }}
+                      className="underline text-accent"
                     >
                       リンク
                     </a>
@@ -84,15 +76,13 @@ export default function MaterialList({
             <div className="flex gap-2">
               <button
                 onClick={() => setEditingId(material.id)}
-                className="rounded-lg px-3 py-1 text-sm transition-colors hover:opacity-80"
-                style={{ color: 'var(--text-muted)' }}
+                className="rounded-lg px-3 py-1 text-sm text-muted transition-colors hover:opacity-80"
               >
                 編集
               </button>
               <button
                 onClick={() => handleDelete(material)}
-                className="rounded-lg px-3 py-1 text-sm transition-colors hover:opacity-80"
-                style={{ color: 'var(--danger)' }}
+                className="rounded-lg px-3 py-1 text-sm text-danger transition-colors hover:opacity-80"
               >
                 削除
               </button>

@@ -10,14 +10,10 @@ export default function WeeklyTotal({ sessions }: WeeklyTotalProps) {
 
   return (
     <div className="card">
-      <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
-        今週
-      </p>
-      <p className="font-heading text-3xl font-bold mt-1" style={{ color: 'var(--text)' }}>
+      <p className="text-sm text-muted">今週</p>
+      <p className="font-heading text-3xl font-bold mt-1 text-theme">
         {total}
-        <span className="text-base font-normal ml-1" style={{ color: 'var(--text-muted)' }}>
-          分
-        </span>
+        <span className="text-base font-normal ml-1 text-muted">分</span>
       </p>
     </div>
   );
