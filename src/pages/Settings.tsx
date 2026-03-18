@@ -39,6 +39,9 @@ export default function Settings() {
         toast.error(err instanceof Error ? err.message : 'インポートに失敗しました');
       }
     };
+    reader.onerror = () => {
+      toast.error('ファイルの読み込みに失敗しました');
+    };
     reader.readAsText(file);
 
     // 同じファイルを再選択可能にする

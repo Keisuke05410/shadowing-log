@@ -40,6 +40,8 @@ export function buildHeatmapData(sessions: PracticeSession[], today?: Date): Hea
   });
 }
 
+export const DELETED_MATERIAL_LABEL = '（削除済み教材）';
+
 export interface DaySummary {
   date: string;
   totalMinutes: number;
@@ -54,7 +56,7 @@ export function getDaySummary(
 ): DaySummary {
   const daySessions = sessions.filter((s) => s.date === date);
   const materialNames = [
-    ...new Set(daySessions.map((s) => materialMap.get(s.materialId) ?? '（削除済み教材）')),
+    ...new Set(daySessions.map((s) => materialMap.get(s.materialId) ?? DELETED_MATERIAL_LABEL)),
   ];
   return {
     date,

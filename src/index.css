@@ -14,6 +14,8 @@
   --heatmap-1: #f5e6d3;
   --heatmap-2: #e8b87a;
   --heatmap-3: #d4873f;
+  --danger-bg: #fdf2f2;
+  --danger-border: #f5d5d5;
 }
 
 body {
@@ -116,4 +118,10 @@ textarea:focus {
 }
 .border-success {
   border-color: var(--success);
+}
+.bg-danger-soft {
+  background-color: var(--danger-bg);
+}
+.border-danger {
+  border-color: var(--danger-border);
 }

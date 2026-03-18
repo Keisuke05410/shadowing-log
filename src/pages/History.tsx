@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { useAppData } from '../hooks/useAppData';
+import { DELETED_MATERIAL_LABEL } from '../lib/heatmap';
 import SessionCard from '../components/SessionCard';
 import EmptyState from '../components/EmptyState';
 
@@ -52,10 +53,11 @@ export default function History() {
   // ジャンプ先へスクロール
   useEffect(() => {
     if (jumpToDate) {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         const el = document.getElementById(`date-${jumpToDate}`);
         el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
+      return () => clearTimeout(timer);
     }
   }, [jumpToDate]);
 
@@ -123,7 +125,7 @@ export default function History() {
                           <SessionCard
                             key={session.id}
                             session={session}
-                            materialName={materialMap.get(session.materialId) ?? '（削除済み教材）'}
+                            materialName={materialMap.get(session.materialId) ?? DELETED_MATERIAL_LABEL}
                             onDelete={deleteSession}
                           />
                         ))}

@@ -40,13 +40,7 @@ export default function Layout() {
       </header>
 
       {error && (
-        <div
-          className="border-b px-4 py-3 text-center text-sm text-danger"
-          style={{
-            backgroundColor: '#fdf2f2',
-            borderColor: '#f5d5d5',
-          }}
-        >
+        <div className="border-b border-danger bg-danger-soft px-4 py-3 text-center text-sm text-danger">
           {error} &mdash;
           <NavLink to="/settings" className="underline font-medium">
             設定画面のインポート機能

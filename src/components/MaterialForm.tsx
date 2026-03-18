@@ -8,7 +8,8 @@ interface MaterialFormProps {
   submitLabel?: string;
 }
 
-const inputClass = 'w-full rounded-lg border border-theme px-3 py-2 text-sm text-theme transition-all';
+const baseInputClass = 'rounded-lg border border-theme px-3 py-2 text-sm text-theme transition-all';
+const inputClass = `${baseInputClass} w-full`;
 
 export default function MaterialForm({
   initialValues,
@@ -98,7 +99,7 @@ export default function MaterialForm({
             onChange={(e) => setMin(e.target.value)}
             min={0}
             max={60}
-            className="w-20 rounded-lg border border-theme px-3 py-2 text-sm text-theme transition-all"
+            className={`${baseInputClass} w-20`}
             placeholder="分"
           />
           <span className="text-muted">:</span>
@@ -108,7 +109,7 @@ export default function MaterialForm({
             onChange={(e) => setSec(e.target.value)}
             min={0}
             max={59}
-            className="w-20 rounded-lg border border-theme px-3 py-2 text-sm text-theme transition-all"
+            className={`${baseInputClass} w-20`}
             placeholder="秒"
           />
         </div>

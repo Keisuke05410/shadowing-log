@@ -36,7 +36,7 @@ export default function Heatmap({ sessions, materials }: HeatmapProps) {
     if (!summary) return block;
     const tooltip = `${summary.sessionCount}件 ・ ${summary.totalMinutes}分 — ${summary.materialNames.join(', ')}`;
     return (
-      <g onClick={() => handleClick(activity.date)} style={{ cursor: 'pointer' }}>
+      <g onClick={() => handleClick(activity.date)} className="cursor-pointer">
         <title>{tooltip}</title>
         {block}
       </g>

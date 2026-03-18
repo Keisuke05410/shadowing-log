@@ -1,8 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { loadData, saveData, exportData, importData, StorageReadError } from '../storage';
+import { loadData, saveData, exportData, importData, StorageReadError, STORAGE_KEY } from '../storage';
 import type { AppData } from '../../types';
-
-const STORAGE_KEY = 'shadowing-log-data';
 
 const sampleData: AppData = {
   materials: [

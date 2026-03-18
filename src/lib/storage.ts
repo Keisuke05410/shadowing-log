@@ -1,6 +1,6 @@
 import type { AppData } from '../types';
 
-const STORAGE_KEY = 'shadowing-log-data';
+export const STORAGE_KEY = 'shadowing-log-data';
 
 const EMPTY_DATA: AppData = { materials: [], sessions: [] };
 
