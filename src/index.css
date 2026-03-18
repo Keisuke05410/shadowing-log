@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+
+:root {
+  --bg: #faf8f5;
+  --bg-card: #ffffff;
+  --text: #2c2420;
+  --text-muted: #8a7e76;
+  --text-faint: #b8aea6;
+  --accent: #d4873f;
+  --accent-soft: #f5e6d3;
+  --success: #5a8a5e;
+  --danger: #c45d4c;
+  --border: #e8e2db;
+  --heatmap-1: #f5e6d3;
+  --heatmap-2: #e8b87a;
+  --heatmap-3: #d4873f;
+}
+
+body {
+  font-family: 'Noto Sans JP', 'Outfit', sans-serif;
+  color: var(--text);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtle-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out both;
+}
+
+.animate-subtle-pulse {
+  animation: subtle-pulse 2s ease-in-out infinite;
+}
+
+/* Stagger children */
+.stagger-children > * {
+  animation: fade-in-up 0.4s ease-out both;
+}
+.stagger-children > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.stagger-children > *:nth-child(2) {
+  animation-delay: 60ms;
+}
+.stagger-children > *:nth-child(3) {
+  animation-delay: 120ms;
+}
+.stagger-children > *:nth-child(4) {
+  animation-delay: 180ms;
+}
+
+/* Card base */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.card-hover:hover {
+  box-shadow: 0 4px 12px rgba(44, 36, 32, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Focus ring */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-soft) !important;
+}
+
+/* Heading font */
+.font-heading {
+  font-family: 'Outfit', sans-serif;
+}
