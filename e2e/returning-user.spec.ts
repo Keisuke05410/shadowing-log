@@ -1,17 +1,19 @@
 import { test, expect } from '@playwright/test';
+import { formatLocalDate } from './helpers';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
-  // Seed data: material + session from 5 days ago (streak broken)
-  await page.evaluate(() => {
-    const fiveDaysAgo = new Date();
-    fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
-    const fourDaysAgo = new Date();
-    fourDaysAgo.setDate(fourDaysAgo.getDate() - 4);
-    const fmt = (d: Date) =>
-      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
-    const data = {
+  const fiveDaysAgo = new Date();
+  fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+  const fourDaysAgo = new Date();
+  fourDaysAgo.setDate(fourDaysAgo.getDate() - 4);
+
+  await page.evaluate(
+    (seed) => {
+      localStorage.setItem('shadowing-log-data', JSON.stringify(seed));
+    },
+    {
       materials: [
         {
           id: 'm1',
@@ -23,7 +25,7 @@ test.beforeEach(async ({ page }) => {
       sessions: [
         {
           id: 's1',
-          date: fmt(fiveDaysAgo),
+          date: formatLocalDate(fiveDaysAgo),
           materialId: 'm1',
           durationMinutes: 20,
           selfEvaluation: 3,
@@ -31,16 +33,15 @@ test.beforeEach(async ({ page }) => {
         },
         {
           id: 's2',
-          date: fmt(fourDaysAgo),
+          date: formatLocalDate(fourDaysAgo),
           materialId: 'm1',
           durationMinutes: 15,
           selfEvaluation: 4,
           createdAt: fourDaysAgo.toISOString(),
         },
       ],
-    };
-    localStorage.setItem('shadowing-log-data', JSON.stringify(data));
-  });
+    },
+  );
   await page.goto('/');
 });
 

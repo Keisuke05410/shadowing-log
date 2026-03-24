@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import * as path from 'path';
 import * as fs from 'fs';
+import { formatLocalDate } from './helpers';
 
 test('データ破損 → エラーバナー → インポートで復旧', async ({ page }) => {
   // localStorage に壊れたデータを入れる
@@ -20,8 +21,6 @@ test('データ破損 → エラーバナー → インポートで復旧', asyn
 
   // インポート用JSONファイルを作成
   const today = new Date();
-  const fmt = (d: Date) =>
-    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   const validData = {
     materials: [
       {
@@ -34,7 +33,7 @@ test('データ破損 → エラーバナー → インポートで復旧', asyn
     sessions: [
       {
         id: 's1',
-        date: fmt(today),
+        date: formatLocalDate(today),
         materialId: 'm1',
         durationMinutes: 10,
         selfEvaluation: 4,

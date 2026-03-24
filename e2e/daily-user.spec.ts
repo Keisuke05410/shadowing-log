@@ -1,16 +1,18 @@
 import { test, expect } from '@playwright/test';
+import { formatLocalDate } from './helpers';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
-  // Seed data: 1 material + sessions for yesterday and today
-  await page.evaluate(() => {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const fmt = (d: Date) =>
-      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
-    const data = {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = formatLocalDate(yesterday);
+
+  await page.evaluate(
+    (seed) => {
+      localStorage.setItem('shadowing-log-data', JSON.stringify(seed));
+    },
+    {
       materials: [
         {
           id: 'm1',
@@ -22,16 +24,15 @@ test.beforeEach(async ({ page }) => {
       sessions: [
         {
           id: 's1',
-          date: fmt(yesterday),
+          date: yesterdayStr,
           materialId: 'm1',
           durationMinutes: 15,
           selfEvaluation: 4,
           createdAt: yesterday.toISOString(),
         },
       ],
-    };
-    localStorage.setItem('shadowing-log-data', JSON.stringify(data));
-  });
+    },
+  );
   await page.goto('/');
 });
 
