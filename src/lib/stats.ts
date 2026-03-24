@@ -15,3 +15,7 @@ export function getTodayTotal(sessions: PracticeSession[], today?: Date): number
   const todayStr = format(today ?? new Date(), 'yyyy-MM-dd');
   return sessions.filter((s) => s.date === todayStr).reduce((sum, s) => sum + s.durationMinutes, 0);
 }
+
+export function getCumulativeTotal(sessions: PracticeSession[]): number {
+  return sessions.reduce((sum, s) => sum + s.durationMinutes, 0);
+}

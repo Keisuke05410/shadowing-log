@@ -19,6 +19,9 @@ test('データ破損 → エラーバナー → インポートで復旧', asyn
   await expect(page).toHaveURL(/\/#\/settings/);
 
   // インポート用JSONファイルを作成
+  const today = new Date();
+  const fmt = (d: Date) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   const validData = {
     materials: [
       {
@@ -31,11 +34,11 @@ test('データ破損 → エラーバナー → インポートで復旧', asyn
     sessions: [
       {
         id: 's1',
-        date: '2026-03-18',
+        date: fmt(today),
         materialId: 'm1',
         durationMinutes: 10,
         selfEvaluation: 4,
-        createdAt: '2026-03-18T10:00:00.000Z',
+        createdAt: today.toISOString(),
       },
     ],
   };

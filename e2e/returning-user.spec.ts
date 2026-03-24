@@ -8,7 +8,8 @@ test.beforeEach(async ({ page }) => {
     fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
     const fourDaysAgo = new Date();
     fourDaysAgo.setDate(fourDaysAgo.getDate() - 4);
-    const fmt = (d: Date) => d.toISOString().slice(0, 10);
+    const fmt = (d: Date) =>
+      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
     const data = {
       materials: [

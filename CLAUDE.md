@@ -7,11 +7,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 English shadowing practice tracker — React SPA with localStorage persistence.
 
 ## Stack
+
 - React 19 + TypeScript + Vite + Tailwind CSS v4
 - State: React Context + localStorage (no backend)
 - Testing: Vitest (unit), Playwright (E2E)
 
 ## Commands
+
 - `npm run dev` — dev server
 - `npm run build` — type-check + production build (`tsc -b && vite build`)
 - `npm run test` — Vitest unit tests
@@ -21,10 +23,15 @@ English shadowing practice tracker — React SPA with localStorage persistence.
 - Commit style: Conventional Commits (`feat:`, `fix:`, `refactor:`, etc.)
 
 ## Development Rules
+
 - TypeScript LSP (`typescript-language-server`) を使って型エラーを確認すること
 - フロントエンドのUI/デザイン修正には `/frontend-design` スキルを使うこと
+- 実装時に必要なテスト（ユニットテスト）も一緒に書くこと
+- 実装完了後は `npm run test` で既存テストが通ることを確認すること
+- 実装完了後は `npm run test:e2e` で Playwright E2E テストの動作確認をすること
 
 ## Style Conventions
+
 - Design theme: "Warm Minimal" — CSS custom properties in `src/index.css` (--accent, --text, --border, etc.)
 - Colors applied via inline `style={{ color: 'var(--text)' }}` since Tailwind v4 has no custom theme config
 - Shared CSS classes: `.card`, `.card-hover`, `.font-heading`, `.animate-fade-in-up`, `.stagger-children`
@@ -33,6 +40,7 @@ English shadowing practice tracker — React SPA with localStorage persistence.
 - Japanese UI text throughout
 
 ## Structure
+
 - `src/components/` — reusable UI components (10 files)
 - `src/pages/` — route pages: Dashboard, Record, History, Settings
 - `src/hooks/` — AppDataProvider context for global state

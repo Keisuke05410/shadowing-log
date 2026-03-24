@@ -4,6 +4,7 @@ import { calculateStreak } from '../lib/streak';
 import TodayStatus from '../components/TodayStatus';
 import StreakDisplay from '../components/StreakDisplay';
 import WeeklyTotal from '../components/WeeklyTotal';
+import CumulativeCards from '../components/CumulativeCards';
 import Heatmap from '../components/Heatmap';
 import EmptyState from '../components/EmptyState';
 
@@ -29,6 +30,7 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-4 stagger-children">
+      <CumulativeCards sessions={sessions} materials={materials} />
       <TodayStatus sessions={sessions} />
       <StreakDisplay streak={streak} hasAnyRecords={hasAnyRecords} />
       <WeeklyTotal sessions={sessions} />

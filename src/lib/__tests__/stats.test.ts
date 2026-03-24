@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getWeeklyTotal, getTodayTotal } from '../stats';
+import { getWeeklyTotal, getTodayTotal, getCumulativeTotal } from '../stats';
 import type { PracticeSession } from '../../types';
 
 function makeSession(date: string, minutes: number): PracticeSession {
@@ -50,5 +50,20 @@ describe('getTodayTotal', () => {
   it('excludes other days', () => {
     const sessions = [makeSession('2026-03-17', 15), makeSession('2026-03-18', 10)];
     expect(getTodayTotal(sessions, today)).toBe(10);
+  });
+});
+
+describe('getCumulativeTotal', () => {
+  it('sums all sessions regardless of date', () => {
+    const sessions = [
+      makeSession('2026-01-01', 30),
+      makeSession('2026-02-15', 45),
+      makeSession('2026-03-18', 20),
+    ];
+    expect(getCumulativeTotal(sessions)).toBe(95);
+  });
+
+  it('returns 0 when no sessions', () => {
+    expect(getCumulativeTotal([])).toBe(0);
   });
 });
