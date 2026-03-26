@@ -5,7 +5,10 @@ export function useCountUp(target: number, durationMs = 800): number {
   const rafId = useRef(0);
 
   useEffect(() => {
-    if (target === 0) return;
+    if (target === 0) {
+      setValue(0);
+      return;
+    }
 
     const start = performance.now();
 

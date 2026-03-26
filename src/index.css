@@ -60,6 +60,9 @@ body {
 .stagger-children > *:nth-child(5) {
   animation-delay: 240ms;
 }
+.stagger-children > *:nth-child(6) {
+  animation-delay: 300ms;
+}
 
 /* Card base */
 .card {

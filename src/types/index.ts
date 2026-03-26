@@ -20,3 +20,18 @@ export interface AppData {
   materials: Material[];
   sessions: PracticeSession[];
 }
+
+export interface MasteryLevel {
+  rank: string;
+  minHours: number;
+  maxHours: number | null;
+}
+
+export interface MasteryLevelInfo {
+  level: MasteryLevel;
+  totalHours: number;
+  progressPercent: number;
+  remainingHours: number | null;
+  remainingMins: number | null;
+  nextLevel: MasteryLevel | null;
+}

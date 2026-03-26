@@ -1,10 +1,12 @@
 import { useMemo } from 'react';
 import { useAppData } from '../hooks/useAppData';
 import { calculateStreak } from '../lib/streak';
+import { getCumulativeTotal } from '../lib/stats';
 import TodayStatus from '../components/TodayStatus';
 import StreakDisplay from '../components/StreakDisplay';
 import WeeklyTotal from '../components/WeeklyTotal';
 import CumulativeCards from '../components/CumulativeCards';
+import MasteryLevel from '../components/MasteryLevel';
 import Heatmap from '../components/Heatmap';
 import EmptyState from '../components/EmptyState';
 
@@ -12,6 +14,7 @@ export default function Dashboard() {
   const { data } = useAppData();
   const { sessions, materials } = data;
   const streak = useMemo(() => calculateStreak(sessions), [sessions]);
+  const totalMinutes = useMemo(() => getCumulativeTotal(sessions), [sessions]);
   const hasAnyRecords = sessions.length > 0;
 
   if (!hasAnyRecords) {
@@ -30,7 +33,8 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-4 stagger-children">
-      <CumulativeCards sessions={sessions} materials={materials} />
+      <CumulativeCards sessions={sessions} materials={materials} totalMinutes={totalMinutes} />
+      <MasteryLevel totalMinutes={totalMinutes} />
       <TodayStatus sessions={sessions} />
       <StreakDisplay streak={streak} hasAnyRecords={hasAnyRecords} />
       <WeeklyTotal sessions={sessions} />

@@ -1,15 +1,17 @@
-import { useMemo } from 'react';
-import { getCumulativeTotal } from '../lib/stats';
 import { useCountUp } from '../hooks/useCountUp';
 import type { PracticeSession, Material } from '../types';
 
 interface CumulativeCardsProps {
   sessions: PracticeSession[];
   materials: Material[];
+  totalMinutes: number;
 }
 
-export default function CumulativeCards({ sessions, materials }: CumulativeCardsProps) {
-  const totalMinutes = useMemo(() => getCumulativeTotal(sessions), [sessions]);
+export default function CumulativeCards({
+  sessions,
+  materials,
+  totalMinutes,
+}: CumulativeCardsProps) {
   const sessionCount = sessions.length;
   const materialCount = materials.length;
 
