@@ -13,8 +13,8 @@ export default function TodayStatus({ sessions }: TodayStatusProps) {
   return (
     <Link
       to="/record"
-      className={`card card-hover block text-center ${hasPracticed ? 'border-success' : ''}`}
-      style={hasPracticed ? { borderLeftWidth: '4px' } : {}}
+      className={`card card-hover block text-center py-6 ${hasPracticed ? 'border-success' : ''}`}
+      style={hasPracticed ? { borderLeftWidth: '4px' } : { background: 'var(--accent-soft)' }}
     >
       {hasPracticed ? (
         <>
@@ -22,7 +22,7 @@ export default function TodayStatus({ sessions }: TodayStatusProps) {
           <p className="text-sm mt-1 text-muted">合計 {todayTotal}分</p>
         </>
       ) : (
-        <p className="text-lg text-muted">今日のシャドーイング、始めますか？</p>
+        <p className="text-xl text-muted">今日のシャドーイング、始めますか？ →</p>
       )}
     </Link>
   );

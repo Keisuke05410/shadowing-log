@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
 import { useAppData } from '../hooks/useAppData';
 import { calculateStreak } from '../lib/streak';
-import { getCumulativeTotal } from '../lib/stats';
+import { getCumulativeTotal, getWeeklyTotal } from '../lib/stats';
 import TodayStatus from '../components/TodayStatus';
 import StreakDisplay from '../components/StreakDisplay';
-import WeeklyTotal from '../components/WeeklyTotal';
 import CumulativeCards from '../components/CumulativeCards';
 import MasteryLevel from '../components/MasteryLevel';
 import RollingComparison from '../components/RollingComparison';
@@ -16,6 +15,7 @@ export default function Dashboard() {
   const { sessions, materials } = data;
   const streak = useMemo(() => calculateStreak(sessions), [sessions]);
   const totalMinutes = useMemo(() => getCumulativeTotal(sessions), [sessions]);
+  const weeklyTotal = useMemo(() => getWeeklyTotal(sessions), [sessions]);
   const hasAnyRecords = sessions.length > 0;
 
   if (!hasAnyRecords) {
@@ -34,12 +34,21 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-4 stagger-children">
-      <CumulativeCards sessions={sessions} materials={materials} totalMinutes={totalMinutes} />
-      <MasteryLevel totalMinutes={totalMinutes} />
-      <RollingComparison sessions={sessions} />
       <TodayStatus sessions={sessions} />
-      <StreakDisplay streak={streak} hasAnyRecords={hasAnyRecords} />
-      <WeeklyTotal sessions={sessions} />
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <StreakDisplay streak={streak} hasAnyRecords={hasAnyRecords} />
+        <MasteryLevel totalMinutes={totalMinutes} />
+      </div>
+
+      <CumulativeCards
+        sessions={sessions}
+        materials={materials}
+        totalMinutes={totalMinutes}
+        weeklyTotal={weeklyTotal}
+      />
+
+      <RollingComparison sessions={sessions} />
       <Heatmap sessions={sessions} materials={materials} />
     </div>
   );
