@@ -7,6 +7,7 @@ import StreakDisplay from '../components/StreakDisplay';
 import WeeklyTotal from '../components/WeeklyTotal';
 import CumulativeCards from '../components/CumulativeCards';
 import MasteryLevel from '../components/MasteryLevel';
+import RollingComparison from '../components/RollingComparison';
 import Heatmap from '../components/Heatmap';
 import EmptyState from '../components/EmptyState';
 
@@ -35,6 +36,7 @@ export default function Dashboard() {
     <div className="space-y-4 stagger-children">
       <CumulativeCards sessions={sessions} materials={materials} totalMinutes={totalMinutes} />
       <MasteryLevel totalMinutes={totalMinutes} />
+      <RollingComparison sessions={sessions} />
       <TodayStatus sessions={sessions} />
       <StreakDisplay streak={streak} hasAnyRecords={hasAnyRecords} />
       <WeeklyTotal sessions={sessions} />
